@@ -1,0 +1,151 @@
+int[,] num1(int n)
+{
+    int[,] a = new int[n, n];
+    Random r = new Random();
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            a[i, j] = r.Next(100);
+        }
+    }
+    return a;
+}
+void num2(int[,] a, string file)
+{
+    int n = a.Length;
+    using (StreamWriter writer = new StreamWriter(file))
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+                writer.Write("{0} ", a[i, j]);
+            writer.WriteLine();
+        }
+    }
+}
+
+int[,] num3(string file, int n)
+{
+    using StreamReader reader = new StreamReader(file);
+    int[,] a = new int[n, n];
+    for (int i = 0; i < n; i++)
+    {
+        string[] s = reader.ReadLine().Split(" ");
+        for (int j = 0; j < n; j++)
+        {
+            a[i, j] = int.Parse(s[j]);
+        }
+
+    }
+    return a;
+}
+void num4(int[,] a)
+{
+    int n = a.GetLength(0);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            Console.Write($"{a[i, j]} ");
+        }
+        Console.WriteLine();
+    }
+}
+// 1
+bool IsProst(int n)
+{
+    for (int i = 2; i < n; i++)
+    {
+        if (n % i == 0)
+            return false;
+    }
+    return true;
+}
+int[,] ex1_1(int n)
+{
+    int[,] ans = new int[n, n];
+    Random r = new Random();
+    int t;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            while (true)
+            {
+                t = r.Next(2, 1000001);
+                if (IsProst(t))
+                {
+                    ans[i, j] = t;
+                    break;
+                }
+            }
+            
+        }
+    }
+    return ans;
+}
+int[] max(int[,] mat)
+{
+    int n = mat.GetLength(0);
+    int maxmax = 0;
+    int a, b;
+    int[] a = new int[2];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (maxmax < mat[i, j])
+            {
+                maxmax = mat[i, j];
+                a[0] = i;
+                a[1] = j;
+            }
+        }
+    }
+    return a;
+}
+
+int[] min(int[,] mat)
+{
+    int n = mat.GetLength(0); 
+    int a, b;
+    int[] minmin = new int[2];
+    int min = 1000002;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (min > mat[i,j])
+            {
+                min = mat[i, j];
+                minmin[0] = i;
+                minmin[1] = j;
+            }
+        }
+    }
+    return minmin;
+}
+
+int[,] ex1_2(int[,] matriz)
+{
+    int n = matriz.GetLength(0);
+    int[] max = poisk_max(matriz);
+
+    int[] minn = poisk_min(matriz);
+    int[] k = new int[n];
+    for (int i = 0; i < n; i++)
+    {
+        k[i] = matriz[minn[0], i];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        matriz[minn[0], i] = matriz[max[0],i];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        matriz[max[0], i] = k[i];
+    }
+    return matriz;
+
+}
